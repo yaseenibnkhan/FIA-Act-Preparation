@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIA Act 1974 — Case File Preparation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c2438;
+    --ink-soft:#3a4358;
+    --paper:#f1ecdd;
+    --paper-dark:#e6ddc6;
+    --folder:#274a3d;
+    --folder-dark:#1a332a;
+    --seal:#8f2d2d;
+    --seal-dark:#6e2020;
+    --gold:#a9822f;
+    --line: rgba(28,36,56,0.18);
+    --ok:#2f6e4f;
+    --bad:#8f2d2d;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1200px 800px at 10% -10%, rgba(39,74,61,0.10), transparent 60%),
+      radial-gradient(900px 700px at 110% 10%, rgba(169,130,47,0.10), transparent 55%),
+      var(--paper);
+    background-attachment:fixed;
+    color:var(--ink);
+    font-family:'Source Sans 3', sans-serif;
+    min-height:100vh;
+    padding:32px 16px 64px;
+  }
+  .noise{
+    position:fixed; inset:0; pointer-events:none; z-index:0; opacity:0.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .wrap{max-width:760px; margin:0 auto; position:relative; z-index:1;}
+
+  .letterhead{
+    display:flex; align-items:flex-end; justify-content:space-between;
+    border-bottom:3px double var(--ink);
+    padding-bottom:14px; margin-bottom:6px;
+  }
+  .letterhead .crest{
+    display:flex; align-items:center; gap:12px;
+  }
+  .crest-mark{
+    width:44px; height:44px; border-radius:50%;
+    border:2px solid var(--folder);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:700; font-size:15px;
+    color:var(--folder); flex:0 0 auto;
+  }
+  .letterhead h1{
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.5rem;
+    margin:0; letter-spacing:0.2px; line-height:1.15;
+  }
+  .letterhead .sub{
+    font-family:'IBM Plex Mono', monospace; font-size:0.68rem; letter-spacing:0.12em;
+    text-transform:uppercase; color:var(--ink-soft); margin-top:3px;
+  }
+  .file-no{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--ink-soft);
+    text-align:right; line-height:1.5;
+  }
+
+  .panel{
+    background:linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0.28));
+    border:1px solid var(--line);
+    border-radius:2px;
+    box-shadow:0 1px 0 rgba(255,255,255,0.6) inset, 0 18px 40px -24px rgba(28,36,56,0.35);
+    padding:34px 32px;
+    margin-top:26px;
+    position:relative;
+  }
+  .panel::before{
+    content:""; position:absolute; left:0; top:22px; bottom:22px; width:3px;
+    background:var(--seal); opacity:0.85;
+  }
+
+  /* ---------- START SCREEN ---------- */
+  .start-eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem; letter-spacing:0.15em;
+    text-transform:uppercase; color:var(--seal); margin:0 0 10px;
+  }
+  .start-title{
+    font-family:'Fraunces', serif; font-size:2.1rem; line-height:1.15; margin:0 0 14px;
+    font-weight:600;
+  }
+  .start-desc{
+    color:var(--ink-soft); font-size:1rem; line-height:1.6; max-width:56ch; margin:0 0 26px;
+  }
+  .stat-row{
+    display:flex; gap:28px; margin-bottom:30px; flex-wrap:wrap;
+  }
+  .stat{
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .stat .num{font-size:1.6rem; font-weight:600; color:var(--folder);}
+  .stat .label{font-size:0.68rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--ink-soft);}
+
+  .choice-label{
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem; text-transform:uppercase;
+    letter-spacing:0.12em; color:var(--ink-soft); margin-bottom:10px; display:block;
+  }
+  .length-row{display:flex; gap:10px; margin-bottom:28px; flex-wrap:wrap;}
+  .len-btn{
+    font-family:'Source Sans 3', sans-serif; font-weight:600; font-size:0.92rem;
+    padding:10px 18px; border-radius:2px; border:1.5px solid var(--ink);
+    background:transparent; color:var(--ink); cursor:pointer; transition:all .15s ease;
+  }
+  .len-btn:hover{background:var(--ink); color:var(--paper);}
+  .len-btn.active{background:var(--folder); border-color:var(--folder); color:#fff;}
+
+  .begin-btn{
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.05rem;
+    background:var(--seal); color:#fff; border:none; padding:15px 32px;
+    border-radius:2px; cursor:pointer; letter-spacing:0.02em;
+    box-shadow:0 10px 24px -12px rgba(143,45,45,0.6);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .begin-btn:hover{transform:translateY(-1px); box-shadow:0 14px 28px -12px rgba(143,45,45,0.7);}
+  .begin-btn:active{transform:translateY(0);}
+
+  /* ---------- QUIZ SCREEN ---------- */
+  .progress-row{
+    display:flex; justify-content:space-between; align-items:center;
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--ink-soft);
+    margin-bottom:14px; letter-spacing:0.04em;
+  }
+  .progress-bar{
+    height:5px; background:var(--paper-dark); border-radius:3px; overflow:hidden; margin-bottom:24px;
+  }
+  .progress-fill{
+    height:100%; background:linear-gradient(90deg, var(--folder), var(--gold));
+    transition:width .3s ease; border-radius:3px;
+  }
+  .section-tag{
+    display:inline-block; font-family:'IBM Plex Mono', monospace; font-size:0.66rem;
+    text-transform:uppercase; letter-spacing:0.1em; color:var(--folder);
+    border:1px solid var(--folder); padding:3px 9px; border-radius:2px; margin-bottom:16px;
+  }
+  .question-text{
+    font-family:'Fraunces', serif; font-size:1.4rem; line-height:1.4; font-weight:600;
+    margin:0 0 24px;
+  }
+  .options{display:flex; flex-direction:column; gap:10px; margin-bottom:8px;}
+  .option{
+    display:flex; align-items:flex-start; gap:12px;
+    text-align:left; width:100%;
+    padding:14px 16px; border-radius:2px; border:1.5px solid var(--line);
+    background:rgba(255,255,255,0.4); cursor:pointer;
+    font-family:'Source Sans 3', sans-serif; font-size:0.98rem; color:var(--ink);
+    transition:background .12s ease, border-color .12s ease, transform .08s ease;
+  }
+  .option:hover:not(.locked){border-color:var(--folder); background:rgba(255,255,255,0.65);}
+  .option .tag{
+    font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:0.82rem;
+    color:var(--ink-soft); flex:0 0 auto; padding-top:1px;
+  }
+  .option.correct{
+    background:rgba(47,110,79,0.14); border-color:var(--ok); color:var(--ok-text, var(--ink));
+  }
+  .option.correct .tag{color:var(--ok);}
+  .option.wrong{
+    background:rgba(143,45,45,0.12); border-color:var(--bad);
+  }
+  .option.wrong .tag{color:var(--bad);}
+  .option.locked{cursor:default;}
+  .option.dim{opacity:0.55;}
+
+  .feedback{
+    font-family:'IBM Plex Mono', monospace; font-size:0.82rem; margin:18px 0 0;
+    display:flex; align-items:center; gap:8px;
+  }
+  .feedback.ok{color:var(--ok);}
+  .feedback.bad{color:var(--bad);}
+
+  .next-row{margin-top:26px; display:flex; justify-content:flex-end;}
+  .next-btn{
+    font-family:'Fraunces', serif; font-weight:600; font-size:0.98rem;
+    background:var(--folder); color:#fff; border:none; padding:12px 26px;
+    border-radius:2px; cursor:pointer; opacity:0; pointer-events:none;
+    transition:opacity .2s ease, transform .15s ease;
+  }
+  .next-btn.show{opacity:1; pointer-events:auto;}
+  .next-btn:hover{transform:translateY(-1px);}
+
+  /* ---------- RESULTS ---------- */
+  .stamp-wrap{display:flex; justify-content:center; margin:6px 0 24px;}
+  .stamp{
+    width:150px; height:150px; border-radius:50%;
+    border:4px double currentColor;
+    display:flex; align-items:center; justify-content:center; flex-direction:column;
+    transform:rotate(-8deg);
+    font-family:'IBM Plex Mono', monospace; text-transform:uppercase;
+  }
+  .stamp .big{font-family:'Fraunces', serif; font-size:2.1rem; font-weight:700; letter-spacing:0.02em;}
+  .stamp .small{font-size:0.62rem; letter-spacing:0.15em; margin-top:2px;}
+  .stamp.pass{color:var(--ok);}
+  .stamp.fail{color:var(--seal);}
+
+  .result-title{font-family:'Fraunces', serif; font-size:1.5rem; text-align:center; margin:0 0 6px;}
+  .result-sub{text-align:center; color:var(--ink-soft); font-size:0.92rem; margin:0 0 30px;}
+
+  .review-item{
+    border-top:1px solid var(--line); padding:16px 0;
+  }
+  .review-item:last-child{border-bottom:1px solid var(--line);}
+  .review-q{font-weight:600; font-size:0.95rem; margin:0 0 8px;}
+  .review-line{font-size:0.86rem; margin:2px 0; font-family:'IBM Plex Mono', monospace;}
+  .review-line.your{color:var(--bad);}
+  .review-line.correct{color:var(--ok);}
+
+  .restart-row{display:flex; gap:12px; justify-content:center; margin-top:30px;}
+
+  footer{
+    text-align:center; margin-top:30px; font-family:'IBM Plex Mono', monospace;
+    font-size:0.68rem; color:var(--ink-soft); letter-spacing:0.06em;
+  }
+
+  @media (max-width:520px){
+    .panel{padding:26px 20px;}
+    .start-title{font-size:1.6rem;}
+    .question-text{font-size:1.15rem;}
+    .letterhead{flex-direction:column; align-items:flex-start; gap:10px;}
+    .file-no{text-align:left;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<div class="wrap">
+
+  <div class="letterhead">
+    <div class="crest">
+      <div class="crest-mark">FIA</div>
+      <div>
+        <h1>Federal Investigation Agency Act, 1974</h1>
+        <div class="sub">Examination Preparation Dossier</div>
+      </div>
+    </div>
+    <div class="file-no" id="fileNo">CASE FILE NO. —</div>
+  </div>
+
+  <div class="panel" id="app"></div>
+
+  <footer>Sourced from the FIA Act, 1974 &nbsp;·&nbsp; For self-study purposes only</footer>
+</div>
+
+<script>
+const QUESTIONS = [
+{s:"Sec. 1", q:"The Federal Investigation Agency Act was enacted in which year?", o:["1969","1972","1974","1978"], a:2},
+{s:"Sec. 2", q:"The Federal Investigation Agency Act, 1974, extends to:", o:["Only the capital territory of Pakistan","Specific provinces of Pakistan","The whole of Pakistan and applies to all citizens and public servants wherever they may be","Only to federal government employees"], a:2},
+{s:"Sec. 3", q:"According to the Act, 'Agency' refers to:", o:["Any investigative body in Pakistan","The Federal Investigation Agency constituted under section 3","A provincial police department","The National Accountability Bureau"], a:1},
+{s:"Sec. 3", q:"'Code' as defined in the Act means:", o:["The Pakistan Penal Code, 1860","The Code of Criminal Procedure, 1898","The Civil Procedure Code, 1908","The Evidence Act, 1872"], a:1},
+{s:"Sec. 3", q:"Who is the 'Director-General' according to the Act?", o:["The head of any federal department","The Director-General of the Agency","The Inspector General of Police","The Chief Justice of Pakistan"], a:1},
+{s:"Sec. 3", q:"'Public servant' in the context of this Act includes:", o:["Only military personnel","A public servant as defined in section 21 of the Pakistan Penal Code and employees of bodies controlled by the Federal Government","Only elected officials","Private sector employees working on government contracts"], a:1},
+{s:"Sec. 4", q:"The Federal Investigation Agency is constituted by:", o:["A provincial government order","An executive order from the Prime Minister","The Federal Government","The Supreme Court of Pakistan"], a:2},
+{s:"Sec. 4", q:"The primary purpose of the Federal Investigation Agency is:", o:["To manage civil disputes","To conduct inquiries and investigations into offences specified in the Schedule","To oversee parliamentary proceedings","To regulate financial markets"], a:1},
+{s:"Sec. 5", q:"The superintendence of the Federal Investigation Agency vests in:", o:["The President of Pakistan","The Prime Minister of Pakistan","The Federal Government","The Director-General of the Agency"], a:2},
+{s:"Sec. 5", q:"The administration of the Agency vests in:", o:["The Minister of Interior","The Director-General","A special parliamentary committee","The Chief Secretary"], a:1},
+{s:"Sec. 6", q:"Members of the Agency, for duties relating to investigation under the Act, have powers throughout Pakistan similar to:", o:["Customs officers","Provincial Police officers under the Code","Revenue officers","Forest guards"], a:1},
+{s:"Sec. 6", q:"A member of the Agency not below the rank of Sub-Inspector may exercise powers of an officer in charge of a police station for inquiries/investigations under the Act, subject to:", o:["Approval from the local magistrate","Rules made under the Act","Consent of the accused","Orders from the provincial government"], a:1},
+{s:"Sec. 6", q:"A Sub-Inspector authorized by the Director-General can arrest a person without warrant if:", o:["The person is suspected of a minor traffic violation","The person has committed, or is reasonably suspected of having committed, offences referred to in section 3","The person fails to produce identification","The person is a foreign national"], a:1},
+{s:"Sec. 6", q:"If a member of the Agency believes property related to an investigation is likely to be removed before seizure permission, they can:", o:["Confiscate the property immediately","Direct the owner not to remove, transfer, or dispose of the property by written order","Seek a court injunction after the property is moved","Inform the local police and take no further action"], a:1},
+{s:"Sec. 6", q:"Contravention of an order under this section is punishable with rigorous imprisonment up to:", o:["Six months","One year","Two years","Five years"], a:1},
+{s:"Sec. 15A", q:"Which officers of the Agency are deemed to be Public Prosecutors?", o:["Inspectors and Sub-Inspectors","Assistant Directors (Legal) and Deputy Directors (Law)","Director-General and Additional Director-General","All members of the Agency"], a:1},
+{s:"Sec. 15A", q:"The Public Prosecutors of the Agency are competent to conduct proceedings in cases sent up for trial by the Agency in:", o:["Civil Courts","Family Courts","Special Courts constituted under law","Military Courts"], a:2},
+{s:"Sec. 7", q:"Who has the power to amend the Schedule of the Act?", o:["The President of Pakistan","The Federal Government","The Director-General of the Agency","The Parliament"], a:1},
+{s:"Sec. 7", q:"Amendments to the Schedule are made by notification in the:", o:["Official Gazette","Major national newspapers","Agency's internal circulars","International legal journals"], a:0},
+{s:"Sec. 8", q:"Who can delegate powers under the Act or rules to any member of the Agency?", o:["The Minister of Law","The Director-General","The Chief Justice","The Attorney General"], a:1},
+{s:"Sec. 9", q:"No legal proceeding shall lie against the Federal Government or any member of the Agency for anything done or intended to be done in good faith under the Act or rules. This is known as:", o:["Immunity","Indemnity","Exemption","Privilege"], a:1},
+{s:"Sec. 10", q:"Who has the power to make rules for carrying out the purposes of the Act?", o:["The Provincial Governments","The Federal Government","The Director-General","The Supreme Court"], a:1},
+{s:"Sec. 10", q:"Rules made under the Act may provide for:", o:["International relations policies","Terms and conditions of service of the Director-General and other members","Taxation policies","Educational curriculum"], a:1},
+{s:"Sec. 12", q:"Which previous ordinances were repealed by the Federal Investigation Agency Act, 1974?", o:["The Police Order, 2002","The Pakistan Special Police Establishment Ordinance, 1948, and the Special Police and Provincial Police (Amalgamation) Order, 1960","The Anti-Terrorism Act, 1997","The Prevention of Corruption Act, 1947"], a:1},
+{s:"Sec. 12", q:"Upon repeal, persons who were members of the Special Police immediately before repeal are transferred to:", o:["The Provincial Police","The Federal Government Services","The Agency","The armed forces"], a:2},
+{s:"Sec. 12", q:"If a specified person was holding a post in or under the provincial police before the commencement of the Act, they continue to be appointed in or under the provincial police, subject to:", o:["A new appointment process","Section 12(7)","Retirement policies","Discretion of the provincial government"], a:1},
+{s:"Sec. 12", q:"The Federal Government may direct the appointment of specified persons to posts in or under the Agency within how many days of the commencement of the Act, upon recommendation of the Director-General and concurrence of the Provincial Government?", o:["30 days","90 days","180 days","365 days"], a:1},
+{s:"Sec. 12", q:"A specified person transferred to the Agency or appointed under a direction will cease to hold a post in or under the Provincial Police and will be entitled to:", o:["A new set of terms and conditions determined by the Agency","The same terms and conditions of service as before the repeal or direction","A severance package","Early retirement benefits"], a:1},
+{s:"General", q:"The Federal Investigation Agency Act, 1974, primarily deals with:", o:["Taxation and revenue collection","The constitution, superintendence, and powers of the Federal Investigation Agency","International trade regulations","Environmental protection laws"], a:1},
+{s:"General", q:"Which of the following is NOT a defined term in Section 3 of the Act?", o:["Agency","Code","Minister","Director-General"], a:2},
+{s:"General", q:"The powers of the Director-General of the Agency are similar to those of an Inspector General of Police under which Act?", o:["The Criminal Procedure Code, 1898","The Police Act, 1861","The Federal Investigation Agency Act, 1974","The Pakistan Penal Code, 1860"], a:1},
+{s:"General", q:"The Federal Government can amend the Schedule of the Act through a notification in the Official Gazette. This power is granted under which section?", o:["Section 4","Section 5","Section 7","Section 9"], a:2},
+{s:"General", q:"The Act ensures that members of the Agency acting in good faith are protected from legal proceedings. This provision is found in:", o:["Section 6","Section 7","Section 9","Section 10"], a:2},
+{s:"General", q:"The rules made by the Federal Government under Section 10 can cover which of the following aspects?", o:["Foreign policy decisions","Terms and conditions of service for Agency members","Agricultural subsidies","Public transportation fares"], a:1},
+{s:"General", q:"The repeal of the Pakistan Special Police Establishment Ordinance, 1948, by the FIA Act, 1974, led to:", o:["The immediate dismissal of all Special Police members","The transfer of Special Police members to the Agency","The creation of a new police force","The merger of Special Police with the Provincial Police"], a:1},
+{s:"General", q:"Which section of the Act deals with the constitution of the Federal Investigation Agency?", o:["Section 2","Section 3","Section 4","Section 5"], a:2},
+{s:"General", q:"The term 'Provincial Police' is defined in which section of the Act?", o:["Section 2","Section 3","Section 4","Section 5"], a:1},
+{s:"General", q:"The Director-General's power to delegate authority to other members of the Agency is outlined in:", o:["Section 6","Section 7","Section 8","Section 9"], a:2},
+{s:"General", q:"Assistant Directors (Legal) and Deputy Directors (Law) are deemed Public Prosecutors under:", o:["Section 10","Section 15A","Section 12","Section 9"], a:1},
+{s:"General", q:"The Federal Investigation Agency Act, 1974, applies to:", o:["Only citizens residing in Pakistan","Citizens of Pakistan and public servants wherever they may be","Only public servants within Pakistan","Foreign nationals residing in Pakistan"], a:1},
+{s:"General", q:"What is the maximum rigorous imprisonment for contravening an order under Section 6?", o:["6 months","1 year","2 years","5 years"], a:1},
+{s:"General", q:"The Federal Government makes rules for the Act by notification in the:", o:["National Assembly","Senate","Official Gazette","Supreme Court Record"], a:2},
+{s:"General", q:"The administration of the Agency is the responsibility of the:", o:["Minister of Interior","Secretary Interior","Director-General","Prime Minister"], a:2},
+{s:"General", q:"The Act states that the Agency is for inquiry into and investigation of offences specified in the:", o:["Constitution","Pakistan Penal Code","Schedule","Criminal Procedure Code"], a:2},
+{s:"General", q:"Which of the following is NOT a power of the members of the Agency?", o:["Search and arrest of persons","Seizure of property","Granting pardons","Exercising powers of an officer in charge of a police station"], a:2},
+{s:"General", q:"The term 'Special Police' refers to the establishment constituted under:", o:["The Police Act, 1861","The Pakistan Special Police Establishment Ordinance, 1948","The Federal Investigation Agency Act, 1974","The Criminal Procedure Code, 1898"], a:1},
+{s:"General", q:"The Federal Government's power to amend the Schedule includes:", o:["Only adding new entries","Only omitting existing entries","Adding, modifying, or omitting any entry","Only modifying existing entries"], a:2},
+{s:"General", q:"The Act provides indemnity for actions done in good faith by:", o:["Only the Director-General","Only the Federal Government","The Federal Government and any member of the Agency","Only public servants not part of the Agency"], a:2},
+{s:"General", q:"Rules made under Section 10 can specify the nature and extent of assistance the Agency may provide to:", o:["International law enforcement agencies","Provincial investigating agencies","Private security firms","Foreign governments"], a:1},
+{s:"General", q:"The repeal section ensures that pending inquiries or investigations with the Special Police:", o:["Are immediately terminated","Are transferred to the Provincial Police","Continue to be conducted by the Agency","Are reviewed by a special committee"], a:2}
+];
+
+const LETTERS = ["A","B","C","D"];
+let session = [];
+let idx = 0;
+let score = 0;
+let answered = false;
+let wrongLog = [];
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function fileNumber(){
+  return "CASE FILE NO. " + Math.floor(1000+Math.random()*8999);
+}
+
+function renderStart(){
+  document.getElementById('fileNo').textContent = fileNumber();
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <p class="start-eyebrow">Random Order · Randomized Options</p>
+    <h2 class="start-title">Prepare for your FIA Act examination.</h2>
+    <p class="start-desc">${QUESTIONS.length} questions drawn from the Federal Investigation Agency Act, 1974 — covering the short title, definitions, constitution of the Agency, powers of members, indemnity, delegation, rule-making and the repeal provisions. Each session shuffles the order.</p>
+    <div class="stat-row">
+      <div class="stat"><div class="num">${QUESTIONS.length}</div><div class="label">Total Questions</div></div>
+      <div class="stat"><div class="num">15</div><div class="label">Sections Covered</div></div>
+      <div class="stat"><div class="num">∞</div><div class="label">Attempts</div></div>
+    </div>
+    <span class="choice-label">Choose Dossier Length</span>
+    <div class="length-row" id="lenRow"></div>
+    <button class="begin-btn" id="beginBtn">Open the case file →</button>
+  `;
+  const lens = [10,20,30,QUESTIONS.length];
+  let chosen = 20;
+  const lenRow = document.getElementById('lenRow');
+  lens.forEach(n=>{
+    const btn = document.createElement('button');
+    btn.className = 'len-btn' + (n===chosen ? ' active':'');
+    btn.textContent = n===QUESTIONS.length ? `All ${n}` : n;
+    btn.onclick = ()=>{
+      chosen = n;
+      [...lenRow.children].forEach(c=>c.classList.remove('active'));
+      btn.classList.add('active');
+    };
+    lenRow.appendChild(btn);
+  });
+  document.getElementById('beginBtn').onclick = ()=> startQuiz(chosen);
+}
+
+function startQuiz(n){
+  const pool = shuffle(QUESTIONS).slice(0,n);
+  session = pool.map(item=>{
+    const optOrder = shuffle(item.o.map((text,i)=>({text,i})));
+    const correctPos = optOrder.findIndex(o=>o.i===item.a);
+    return {s:item.s, q:item.q, opts:optOrder.map(o=>o.text), correctPos};
+  });
+  idx = 0; score = 0; wrongLog = [];
+  renderQuestion();
+}
+
+function renderQuestion(){
+  answered = false;
+  const item = session[idx];
+  const app = document.getElementById('app');
+  const pct = Math.round((idx/session.length)*100);
+  app.innerHTML = `
+    <div class="progress-row">
+      <span>QUESTION ${idx+1} OF ${session.length}</span>
+      <span>SCORE ${score}</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    <span class="section-tag">${item.s}</span>
+    <p class="question-text">${item.q}</p>
+    <div class="options" id="optsWrap"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="next-row"><button class="next-btn" id="nextBtn">${idx===session.length-1 ? 'See Results' : 'Next Question'} →</button></div>
+  `;
+  const optsWrap = document.getElementById('optsWrap');
+  item.opts.forEach((text,i)=>{
+    const b = document.createElement('button');
+    b.className = 'option';
+    b.innerHTML = `<span class="tag">${LETTERS[i]}</span><span>${text}</span>`;
+    b.onclick = ()=> selectOption(i);
+    optsWrap.appendChild(b);
+  });
+  document.getElementById('nextBtn').onclick = ()=>{
+    idx++;
+    if(idx>=session.length){ renderResults(); } else { renderQuestion(); }
+  };
+}
+
+function selectOption(i){
+  if(answered) return;
+  answered = true;
+  const item = session[idx];
+  const opts = document.querySelectorAll('#optsWrap .option');
+  opts.forEach((el,j)=>{
+    el.classList.add('locked');
+    if(j===item.correctPos) el.classList.add('correct');
+    else if(j===i) el.classList.add('wrong');
+    else el.classList.add('dim');
+  });
+  const fb = document.getElementById('feedback');
+  if(i===item.correctPos){
+    score++;
+    fb.className = 'feedback ok';
+    fb.textContent = '✓ Correct — noted in the record.';
+  } else {
+    fb.className = 'feedback bad';
+    fb.textContent = '✗ Incorrect — correct answer marked above.';
+    wrongLog.push({q:item.q, your:item.opts[i], correct:item.opts[item.correctPos], s:item.s});
+  }
+  document.getElementById('nextBtn').classList.add('show');
+}
+
+function renderResults(){
+  document.getElementById('fileNo').textContent = fileNumber();
+  const pct = Math.round((score/session.length)*100);
+  const pass = pct >= 70;
+  const app = document.getElementById('app');
+  let reviewHtml = '';
+  if(wrongLog.length){
+    reviewHtml = `<div style="margin-top:10px;">
+      <span class="choice-label">Flagged For Review</span>
+      ${wrongLog.map(w=>`
+        <div class="review-item">
+          <p class="review-q">${w.s} — ${w.q}</p>
+          <p class="review-line your">Your answer: ${w.your}</p>
+          <p class="review-line correct">Correct answer: ${w.correct}</p>
+        </div>
+      `).join('')}
+    </div>`;
+  }
+  app.innerHTML = `
+    <div class="stamp-wrap">
+      <div class="stamp ${pass?'pass':'fail'}">
+        <div class="big">${pct}%</div>
+        <div class="small">${pass ? 'Case Cleared' : 'Needs Review'}</div>
+      </div>
+    </div>
+    <p class="result-title">You scored ${score} of ${session.length}</p>
+    <p class="result-sub">${pass ? 'Solid grasp of the Act — keep the momentum going.' : 'Revisit the flagged sections below before your next attempt.'}</p>
+    ${reviewHtml}
+    <div class="restart-row">
+      <button class="begin-btn" id="retryBtn">Reopen Case File →</button>
+    </div>
+  `;
+  document.getElementById('retryBtn').onclick = renderStart;
+}
+
+renderStart();
+</script>
+</body>
+</html>
